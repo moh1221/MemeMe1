@@ -44,7 +44,6 @@ UINavigationControllerDelegate, UITextFieldDelegate {
             imagePickerView.image = existingMeme.image
             //Enable share and cancel button
             shareButton.enabled = true
-            cancelButton.enabled = true
         } else {
             // New meme et Top and Bottom text Field
             setTextField("TOP", textField: topTextField)
@@ -52,9 +51,6 @@ UINavigationControllerDelegate, UITextFieldDelegate {
             
             //Disable Share button
             shareButton.enabled = false
-            if appDelegate.memes.count > 0  {
-                cancelButton.enabled = true
-            }
         }
     }
     
