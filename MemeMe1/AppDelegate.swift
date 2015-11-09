@@ -11,6 +11,9 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    //save and share memes between controllers
+    var memes = [Meme]()
+    
     var window: UIWindow?
 
 

@@ -1,5 +1,5 @@
 //
-//  MemeViewController.swift
+//  MemeEditorViewController.swift
 //  MemeMe1
 //
 //  Created by BringMe on 9/20/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MemeViewController: UIViewController, UIImagePickerControllerDelegate,
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var imagePickerView: UIImageView!
@@ -19,6 +19,8 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var bottomToolBar: UIToolbar!
     @IBOutlet weak var topToolBar: UIToolbar!
+    
+    var meme: Meme!
     
     //Text attributes Color, size and font style
     let TextAttributes = [
@@ -33,14 +35,22 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Set Top and Bottom text Field
-        setTextField("TOP", textField: topTextField)
-        setTextField("BOTTOM", textField: bottomTextField)
-        
-        //Disable Share button
-        shareButton.enabled = false
-        
+        if let existingMeme = meme {
+            // load existing meme from details editor
+            setTextField(existingMeme.topText, textField: topTextField)
+            setTextField(existingMeme.bottomText, textField: bottomTextField)
+            imagePickerView.image = existingMeme.image
+            //Enable share and cancel button
+            shareButton.enabled = true
+            cancelButton.enabled = true
+        } else {
+            // New meme et Top and Bottom text Field
+            setTextField("TOP", textField: topTextField)
+            setTextField("BOTTOM", textField: bottomTextField)
+            
+            //Disable Share button
+            shareButton.enabled = false
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -48,12 +58,12 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         
         //The Camera button is disabled when app is run on devices without a camera
         cameraButton.enabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
-        self.subscribeToKeyboardNotifications()
+        subscribeToKeyboardNotifications()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        self.unsubscribeFromKeyboardNotifications()
+        unsubscribeFromKeyboardNotifications()
     }
     
     // Setup Text filed to approximate to the "Impact" font, all caps, white with a black outline
@@ -73,8 +83,9 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     func saveMeme() {
         //Create the meme
         if(imagePickerView.image != nil){
-            let meme = Meme( topText: topTextField.text!, bottomText: bottomTextField.text!, image:
+            let meme = Meme( top: topTextField.text!, bottom: bottomTextField.text!, image:
                 imagePickerView.image!, memedImage: generateMemedImage())
+            (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
         }
     }
     
@@ -100,23 +111,20 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBAction func shareMeme(sender: UIBarButtonItem) {
         let activityController = UIActivityViewController(activityItems: [generateMemedImage()], applicationActivities: nil)
-        presentViewController(activityController, animated: true, completion: nil)
+        
         activityController.completionWithItemsHandler = { activity, success, items, error in
             if(success) {
                 self.saveMeme()
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
+        
+        presentViewController(activityController, animated: true, completion: nil)
     }
     
     @IBAction func cancelShare(sender: UIBarButtonItem) {
-        
-        //Remove image and set top and bottom text
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
-        imagePickerView.image = nil
-        
-        //disable Cancel Button
-        cancelButton.enabled = false
+
+        self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     
@@ -176,7 +184,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.view.endEditing(true)
-        return false
+        return true
     }
     
     //Pick Image using Album option
@@ -188,11 +196,6 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         self.presentViewController(imagePicker, animated: true){
             self.shareButton.enabled = true
         }
-        
-        //Enable Cancel Button
-        cancelButton.enabled = true
-        
-
     }
     
     
@@ -205,10 +208,6 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         self.presentViewController(imagePicker, animated: true){
             self.shareButton.enabled = true
         }
-        
-        //Enable Cancel Button
-        cancelButton.enabled = true
-
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
