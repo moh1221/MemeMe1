@@ -22,6 +22,8 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     
     var meme: Meme!
     
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    
     //Text attributes Color, size and font style
     let TextAttributes = [
         NSStrokeColorAttributeName : UIColor.blackColor(),
@@ -50,6 +52,9 @@ UINavigationControllerDelegate, UITextFieldDelegate {
             
             //Disable Share button
             shareButton.enabled = false
+            if appDelegate.memes.count > 0  {
+                cancelButton.enabled = true
+            }
         }
     }
     
@@ -83,9 +88,9 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     func saveMeme() {
         //Create the meme
         if(imagePickerView.image != nil){
-            let meme = Meme( top: topTextField.text!, bottom: bottomTextField.text!, image:
+            let meme = Meme( topText: topTextField.text!, bottomText: bottomTextField.text!, image:
                 imagePickerView.image!, memedImage: generateMemedImage())
-            (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
+            appDelegate.memes.append(meme)
         }
     }
     
@@ -95,8 +100,8 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         bottomToolBar.hidden = true
         
         // Render view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        self.view.drawViewHierarchyInRect(self.view.frame,
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.drawViewHierarchyInRect(view.frame,
             afterScreenUpdates: true)
         let memedImage : UIImage =
         UIGraphicsGetImageFromCurrentImageContext()
@@ -123,9 +128,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     }
     
     @IBAction func cancelShare(sender: UIBarButtonItem) {
-
-        self.dismissViewControllerAnimated(true, completion: nil)
-        
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     //Keyboard
@@ -152,7 +155,6 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     }
     
     func keyboardWillHide(notification: NSNotification){
-        //self.view.frame.origin.y += getKeyboardHeight(notification)
         view.frame.origin.y += getKeyboardHeight(notification)
         currentKeyboardHeight = 0
         view.frame.origin.y = 0
@@ -183,7 +185,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        view.endEditing(true)
         return true
     }
     
@@ -193,7 +195,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        self.presentViewController(imagePicker, animated: true){
+        presentViewController(imagePicker, animated: true){
             self.shareButton.enabled = true
         }
     }
@@ -205,7 +207,7 @@ UINavigationControllerDelegate, UITextFieldDelegate {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
-        self.presentViewController(imagePicker, animated: true){
+        presentViewController(imagePicker, animated: true){
             self.shareButton.enabled = true
         }
     }
@@ -213,11 +215,11 @@ UINavigationControllerDelegate, UITextFieldDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let image = info["UIImagePickerControllerOriginalImage"] as? UIImage {
             
-            self.imagePickerView.image = image
+            imagePickerView.image = image
             
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {

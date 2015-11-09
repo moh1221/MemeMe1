@@ -32,7 +32,7 @@ class MemeCollectionViewController: UICollectionViewController {
     //set flow layout
     func setFlowLayout() {
         let space: CGFloat = 3.0
-        let dimi: CGFloat = (self.view.frame.size.width - ( space * 2 )) / 3.0
+        let dimi: CGFloat = (view.frame.size.width - ( space * 2 )) / 3.0
         flowLayout.itemSize = CGSizeMake(dimi, dimi)
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
@@ -62,14 +62,14 @@ class MemeCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let detailController = self.storyboard!.instantiateViewControllerWithIdentifier("MemeDetailsViewController") as! MemeDetailsViewController
-        detailController.meme = self.memes[indexPath.row]
-        self.navigationController!.pushViewController(detailController, animated: true)
+        let detailController = storyboard!.instantiateViewControllerWithIdentifier("MemeDetailsViewController") as! MemeDetailsViewController
+        detailController.meme = memes[indexPath.row]
+        navigationController!.pushViewController(detailController, animated: true)
     }
     
     //move to Editor view to add new Memes
     @IBAction func AddEditorView(sender: UIBarButtonItem) {
         let memeEditorController = storyboard!.instantiateViewControllerWithIdentifier("MemeEditorViewController") as! MemeEditorViewController
-        self.presentViewController(memeEditorController, animated: true, completion: nil)
+        presentViewController(memeEditorController, animated: true, completion: nil)
     }
 }

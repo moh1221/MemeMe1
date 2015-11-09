@@ -82,7 +82,11 @@
                         </cells>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Sent Memes" id="j3u-OK-TtJ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="A31-MY-n9W"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="A31-MY-n9W">
+                            <connections>
+                                <action selector="AddEditorView:" destination="92Y-lk-ciq" id="ca4-hD-gu6"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="flowLayout" destination="r7k-v5-Gqy" id="EcH-Ie-wD7"/>
@@ -145,12 +149,12 @@
                                             <exclude reference="p0Y-He-GOT"/>
                                         </mask>
                                         <mask key="constraints">
-                                            <exclude reference="5ls-Jc-VUT"/>
-                                            <exclude reference="KYB-Qa-oY7"/>
-                                            <exclude reference="ycc-YE-1RV"/>
                                             <exclude reference="bOe-s8-iLs"/>
                                             <exclude reference="djd-kh-3MA"/>
                                             <exclude reference="uAD-NO-wA3"/>
+                                            <exclude reference="5ls-Jc-VUT"/>
+                                            <exclude reference="KYB-Qa-oY7"/>
+                                            <exclude reference="ycc-YE-1RV"/>
                                         </mask>
                                     </variation>
                                     <variation key="widthClass=compact">
@@ -159,12 +163,12 @@
                                             <include reference="p0Y-He-GOT"/>
                                         </mask>
                                         <mask key="constraints">
-                                            <include reference="5ls-Jc-VUT"/>
-                                            <include reference="KYB-Qa-oY7"/>
-                                            <include reference="ycc-YE-1RV"/>
                                             <include reference="bOe-s8-iLs"/>
                                             <include reference="djd-kh-3MA"/>
                                             <include reference="uAD-NO-wA3"/>
+                                            <include reference="5ls-Jc-VUT"/>
+                                            <include reference="KYB-Qa-oY7"/>
+                                            <include reference="ycc-YE-1RV"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>

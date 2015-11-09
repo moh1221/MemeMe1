@@ -52,7 +52,7 @@ class MemeTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("MemeTableCell", forIndexPath: indexPath) as! MemeTableViewCell
-        let meme = self.memes[indexPath.row]
+        let meme = memes[indexPath.row]
         
         // Set the text and image
         cell.memeTextLabel?.text = "\(meme.topText). \(meme.bottomText)"
@@ -64,9 +64,9 @@ class MemeTableViewController: UITableViewController {
     //on row select display meme in details view
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let detailController = self.storyboard!.instantiateViewControllerWithIdentifier("MemeDetailsViewController") as! MemeDetailsViewController
+        let detailController = storyboard!.instantiateViewControllerWithIdentifier("MemeDetailsViewController") as! MemeDetailsViewController
         detailController.meme = memes[indexPath.row]
-        self.navigationController!.pushViewController(detailController, animated: true)
+        navigationController!.pushViewController(detailController, animated: true)
         
     }
 
@@ -82,7 +82,7 @@ class MemeTableViewController: UITableViewController {
         //update memes @ appDelegate
         applicationDelegate.memes = memes
         //delete row from table view
-        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
 
     
@@ -93,7 +93,7 @@ class MemeTableViewController: UITableViewController {
     }
     func memeEditor() {
         let memeEditorController = storyboard!.instantiateViewControllerWithIdentifier("MemeEditorViewController") as! MemeEditorViewController
-        self.presentViewController(memeEditorController, animated: true, completion: nil)
+        presentViewController(memeEditorController, animated: true, completion: nil)
     }
     
 }
