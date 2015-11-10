@@ -28,15 +28,6 @@ class MemeTableViewController: UITableViewController {
         super.viewWillAppear(true)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        // The editor should be presented if there are no sent memes
-        if memes.count == 0  {
-            // No memes. Lets present the editor
-            memeEditor()
-        }
-    }
-    
     func updateMemes() {
         //load memes from AppDelegate
         applicationDelegate = (UIApplication.sharedApplication().delegate as! AppDelegate)
